@@ -100,3 +100,53 @@ class GameState:
         """Render the current state"""
         pass
 
+class FileNameState(GameState):
+    """State for entering the filename"""
+    def __init__(self, game):
+        super().__init__(game)
+        self.filename = ""
+    
+    def handle_keydown(self, event):
+        if event.key == pygame.K_RETURN and self.filename.strip():
+            # Move to question input state
+            self.game.change_state(QuestionInputState(self.game, self.filename.strip()))
+        elif event.key == pygame.K_BACKSPACE:
+            self.filename = self.filename[:-1]
+        elif event.key == pygame.K_ESCAPE:
+            return False  # Quit
+        else:
+            self.filename += event.unicode
+        return True
+    
+    def render(self):
+        self.game.draw_text("Enter filename (e.g. quiz.txt):", 40, 50, 
+                           self.game.large_font, self.game.WHITE)
+        self.game.draw_text(self.filename, 40, 100, self.game.font, self.game.BLUE)
+
+
+class QuestionInputState(GameState):
+    """State for inputting question and answers"""
+    def __init__(self, game, filename):
+        super().__init__(game)
+        self.filename = filename
+        self.labels = ["Question", "a)", "b)", "c)", "d)", "Correct Answer (a/b/c/d)"]
+        self.inputs = [""] * len(self.labels)
+        self.current_input = 0
+    
+    def handle_keydown(self, event):
+        if event.key == pygame.K_RETURN:
+            if self._validate_inputs():
+                self._save_question()
+                self.game.change_state(SavedMessageState(self.game, self.filename))
+            else:
+                print("Please fill all fields and enter a valid correct answer (a/b/c/d).")
+        elif event.key == pygame.K_TAB:
+            self.current_input = (self.current_input + 1) % len(self.inputs)
+        elif event.key == pygame.K_BACKSPACE:
+            self.inputs[self.current_input] = self.inputs[self.current_input][:-1]
+        elif event.key == pygame.K_ESCAPE:
+            return False  # Quit
+        else:
+            self.inputs[self.current_input] += event.unicode
+        return True
+    
