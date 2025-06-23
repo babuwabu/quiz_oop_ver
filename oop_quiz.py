@@ -57,3 +57,28 @@ class QuizMaker:
     def change_state(self, new_state):
         """Change the current application state"""
         self.state = new_state
+
+    def run(self):
+        """Main game loop"""
+        running = True
+        while running:
+            # Clear screen with background
+            self.screen.blit(self.bg_image, (0, 0))
+            
+            # Handle events and update current state
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if not self.state.handle_keydown(event):
+                        running = False
+            
+            # Render current state
+            self.state.render()
+            
+            pygame.display.flip()
+            self.clock.tick(30)
+        
+        self.quit()
+
+    
