@@ -81,4 +81,7 @@ class QuizMaker:
         
         self.quit()
 
-    
+    def quit(self):
+        """Clean up and quit"""
+        pygame.quit()
+        sys.exit()
