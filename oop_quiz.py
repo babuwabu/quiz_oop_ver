@@ -54,4 +54,6 @@ class QuizMaker:
         text_surf = font.render(text, True, color)
         self.screen.blit(text_surf, (x, y))
 
-    
+    def change_state(self, new_state):
+        """Change the current application state"""
+        self.state = new_state
