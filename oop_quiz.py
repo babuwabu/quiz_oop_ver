@@ -47,3 +47,11 @@ class QuizMaker:
             self.font = pygame.font.Font(None, 18)
             self.large_font = pygame.font.Font(None, 24)
 
+    def draw_text(self, text, x, y, font, color=None):
+        """Draw text on screen"""
+        if color is None:
+            color = self.BLACK
+        text_surf = font.render(text, True, color)
+        self.screen.blit(text_surf, (x, y))
+
+    
