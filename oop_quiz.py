@@ -85,3 +85,18 @@ class QuizMaker:
         """Clean up and quit"""
         pygame.quit()
         sys.exit()
+
+
+class GameState:
+    """Base class for all game states"""
+    def __init__(self, game):
+        self.game = game
+    
+    def handle_keydown(self, event):
+        """Handle keydown events. Return False to quit the game."""
+        return True
+    
+    def render(self):
+        """Render the current state"""
+        pass
+
