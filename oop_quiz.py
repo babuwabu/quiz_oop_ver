@@ -149,4 +149,24 @@ class QuestionInputState(GameState):
         else:
             self.inputs[self.current_input] += event.unicode
         return True
+
+    def _validate_inputs(self):
+        """Validate that all inputs are filled and correct answer is valid"""
+        return (all(self.inputs) and 
+                self.inputs[5].lower() in ['a', 'b', 'c', 'd'])
     
+    def _save_question(self):
+        """Save the question to file"""
+        QuestionSaver.save_question(self.filename, self.inputs)
+    
+    def render(self):
+        self.game.draw_text("Enter your question and answers:", 40, 30, 
+                           self.game.large_font, self.game.WHITE)
+        
+        for i, label in enumerate(self.labels):
+            color = self.game.BLUE if i == self.current_input else self.game.WHITE
+            self.game.draw_text(f"{label} {self.inputs[i]}", 40, 80 + i * 50, 
+                               self.game.font, color)
+        
+        self.game.draw_text("ENTER = Save | TAB = Next | ESC = Quit", 40, 440, 
+                           self.game.font, self.game.WHITE)
