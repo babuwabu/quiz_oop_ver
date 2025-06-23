@@ -170,3 +170,22 @@ class QuestionInputState(GameState):
         
         self.game.draw_text("ENTER = Save | TAB = Next | ESC = Quit", 40, 440, 
                            self.game.font, self.game.WHITE)
+
+
+class SavedMessageState(GameState):
+    """State showing saved message and asking for another question"""
+    def __init__(self, game, filename):
+        super().__init__(game)
+        self.filename = filename
+    
+    def handle_keydown(self, event):
+        if event.key == pygame.K_y:
+            # Add another question
+            self.game.change_state(QuestionInputState(self.game, self.filename))
+        elif event.key == pygame.K_n:
+            return False  # Quit
+        return True
+    
+    def render(self):
+        self.game.draw_text("Saved! Add another? (y/n)", 40, 500, 
+                           self.game.large_font, self.game.WHITE)
