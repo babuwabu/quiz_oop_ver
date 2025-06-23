@@ -26,3 +26,24 @@ class QuizMaker:
         # Initialize state
         self.state = FileNameState(self)
         
+    def _load_resources(self):
+        """Load all game resources"""
+        try:
+            # Load and play background music
+            pygame.mixer.music.load("02. Title Theme.mp3")
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play(-1)
+            
+            # Load background image
+            self.bg_image = pygame.image.load("pixel forest.jpg")
+            self.bg_image = pygame.transform.scale(self.bg_image, (self.WIDTH, self.HEIGHT))
+            
+            # Load fonts
+            self.font = pygame.font.Font("PressStart2P-Regular.ttf", 18)
+            self.large_font = pygame.font.Font("PressStart2P-Regular.ttf", 24)
+        except (pygame.error, FileNotFoundError) as e:
+            print(f"Warning: Could not load resource - {e}")
+            # Fallback to default font if custom font fails
+            self.font = pygame.font.Font(None, 18)
+            self.large_font = pygame.font.Font(None, 24)
+
