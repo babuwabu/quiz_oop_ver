@@ -189,3 +189,32 @@ class SavedMessageState(GameState):
     def render(self):
         self.game.draw_text("Saved! Add another? (y/n)", 40, 500, 
                            self.game.large_font, self.game.WHITE)
+        
+
+class QuestionSaver:
+    """Utility class for saving questions to file"""
+    @staticmethod
+    def save_question(filename, data):
+        """Save a question and its answers to the specified file"""
+        try:
+            with open(filename, "a") as file:
+                file.write("::QUESTION::\n")
+                file.write(data[0] + "\n")
+                file.write("a) " + data[1] + "\n")
+                file.write("b) " + data[2] + "\n")
+                file.write("c) " + data[3] + "\n")
+                file.write("d) " + data[4] + "\n")
+                file.write("ANSWER: " + data[5].lower() + "\n")
+                file.write("::END::\n\n")
+        except IOError as e:
+            print(f"Error saving question: {e}")
+
+
+def main():
+    """Entry point of the application"""
+    quiz_maker = QuizMaker()
+    quiz_maker.run()
+
+
+if __name__ == "__main__":
+    main()
